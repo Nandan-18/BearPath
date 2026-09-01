@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="BearPath">
+  <rect width="32" height="32" rx="8" fill="#7dcc9a"/>
+  <g fill="#140f0c">
+    <circle cx="9.2" cy="10.2" r="5.35"/>
+    <circle cx="22.8" cy="10.2" r="5.35"/>
+    <ellipse cx="16" cy="18.2" rx="10.4" ry="9.6"/>
+  </g>
+  <circle cx="16" cy="20.4" r="2.35" fill="#f26a45"/>
+</svg>
