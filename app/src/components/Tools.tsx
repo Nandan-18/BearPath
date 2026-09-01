@@ -10,11 +10,12 @@ import {
   TooltipTrigger,
 } from "@/components/Tooltip";
 import { WEIGHT_MAX, WEIGHT_MIN } from "@/graph/models";
+import { useMobile } from "@/hooks/useMobile";
 import { cn } from "@/lib/cn";
 import { bias } from "@/lib/format";
 
 const tool =
-  "chip grid size-10 place-items-center rounded-full text-foreground/80 transition hover:bg-background/80 hover:text-foreground disabled:pointer-events-none disabled:opacity-50";
+  "chip grid size-11 place-items-center rounded-full text-foreground/80 transition hover:bg-background/80 hover:text-foreground disabled:pointer-events-none disabled:opacity-50 sm:size-10";
 
 interface ToolsProps {
   weight: number;
@@ -31,12 +32,13 @@ export function Tools({
   onLocate,
   onRecenter,
 }: ToolsProps) {
+  const mobile = useMobile();
   const preference = bias(weight);
 
   return (
     <TooltipProvider>
-      <div className="pointer-events-auto flex flex-col gap-2">
-        <Tip label="Use my location">
+      <div className="pointer-events-auto flex flex-row gap-1.5 sm:flex-col sm:gap-2">
+        <Tip label="Use my location" mobile={mobile}>
           <button
             type="button"
             aria-label="Use my location"
@@ -47,7 +49,7 @@ export function Tools({
             <LocateFixed className={cn("size-4", locating && "animate-pulse")} />
           </button>
         </Tip>
-        <Tip label="Recenter campus">
+        <Tip label="Recenter campus" mobile={mobile}>
           <button
             type="button"
             aria-label="Recenter campus"
@@ -58,7 +60,7 @@ export function Tools({
           </button>
         </Tip>
         <Popover>
-          <Tip label={preference}>
+          <Tip label={preference} mobile={mobile}>
             <PopoverTrigger asChild>
               <button
                 type="button"
@@ -69,7 +71,12 @@ export function Tools({
               </button>
             </PopoverTrigger>
           </Tip>
-          <PopoverContent align="end" side="left">
+          <PopoverContent
+            align="end"
+            side={mobile ? "bottom" : "left"}
+            sideOffset={mobile ? 8 : 4}
+            className={cn(mobile && "w-[min(18rem,calc(100vw-1.5rem))]")}
+          >
             <div className="mb-3 flex items-baseline justify-between text-[0.72rem] uppercase tracking-[0.14em] text-foreground/45">
               <span>Indoors</span>
               <span>Outdoors</span>
@@ -95,7 +102,19 @@ export function Tools({
   );
 }
 
-function Tip({ label, children }: { label: string; children: ReactNode }) {
+function Tip({
+  label,
+  mobile,
+  children,
+}: {
+  label: string;
+  mobile: boolean;
+  children: ReactNode;
+}) {
+  if (mobile) {
+    return children;
+  }
+
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>

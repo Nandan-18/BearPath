@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 
 import type { Building } from "@/graph/models";
 import { cn } from "@/lib/cn";
+import { brief } from "@/lib/format";
 
 interface IslandProps {
   from?: Building;
@@ -27,21 +28,21 @@ export function Island({
   const picked = Boolean(from || to);
 
   return (
-    <div className="flex flex-col items-center gap-1.5">
+    <div className="flex w-full max-w-md flex-col items-center gap-1.5 sm:max-w-none">
       <motion.div
         initial={{ opacity: 0, y: -10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-        className="chip pointer-events-auto flex h-11 items-center rounded-full p-1"
+        className="chip pointer-events-auto flex h-12 w-full items-center rounded-full p-1 sm:h-11 sm:w-auto"
       >
         <Pick label="Start" building={from} tone="from" onClick={onFrom} />
         <Icon label="Swap start and end" onClick={onSwap}>
-          <ArrowLeftRight className="size-3.5" />
+          <ArrowLeftRight className="size-4 sm:size-3.5" />
         </Icon>
         <Pick label="End" building={to} tone="to" onClick={onTo} />
         {picked ? (
           <Icon label="Clear route" onClick={onClear}>
-            <X className="size-3.5" />
+            <X className="size-4 sm:size-3.5" />
           </Icon>
         ) : null}
       </motion.div>
@@ -82,7 +83,7 @@ function Pick({
       onClick={onClick}
       aria-label={building ? `${label}: ${building.code}` : label}
       className={cn(
-        "grid h-8 min-w-16 place-items-center rounded-full px-3 font-mono text-sm tracking-wide transition hover:bg-foreground/8",
+        "flex min-h-10 min-w-0 flex-1 flex-col items-center justify-center rounded-full px-2 transition hover:bg-foreground/8 sm:grid sm:h-8 sm:min-w-16 sm:flex-none sm:place-items-center sm:px-3",
         building
           ? tone === "from"
             ? "text-ice"
@@ -90,7 +91,14 @@ function Pick({
           : "text-foreground/35",
       )}
     >
-      {building?.code ?? "-"}
+      <span className="font-mono text-sm tracking-wide">
+        {building?.code ?? label}
+      </span>
+      {building ? (
+        <span className="max-w-full truncate text-[0.62rem] leading-tight text-foreground/45 sm:hidden">
+          {brief(building.name, building.code)}
+        </span>
+      ) : null}
     </button>
   );
 }
@@ -109,7 +117,7 @@ function Icon({
       type="button"
       onClick={onClick}
       aria-label={label}
-      className="grid size-8 shrink-0 place-items-center rounded-full text-foreground/50 transition hover:bg-foreground/8 hover:text-foreground"
+      className="grid size-10 shrink-0 place-items-center rounded-full text-foreground/50 transition hover:bg-foreground/8 hover:text-foreground sm:size-8"
     >
       {children}
     </button>

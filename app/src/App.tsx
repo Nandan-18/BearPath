@@ -1,6 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import { Brand } from "@/components/Brand";
 import { Dock } from "@/components/Dock";
 import { Fade } from "@/components/Fade";
 import { Island } from "@/components/Island";
@@ -78,6 +79,41 @@ export default function App() {
     return () => window.removeEventListener("keydown", onKey);
   }, [from, show]);
 
+  const island = (
+    <Island
+      from={byCode(from)}
+      to={byCode(to)}
+      hint={open ? "" : hint}
+      onFrom={() => show("from")}
+      onTo={() => show("to")}
+      onSwap={swap}
+      onClear={clear}
+    />
+  );
+
+  const errorBanner = error ? (
+    <p
+      role="alert"
+      className="w-full max-w-xl rounded-full border border-destructive/30 bg-background/80 px-3 py-1.5 text-center text-xs text-destructive"
+    >
+      {error}
+    </p>
+  ) : null;
+
+  const routePanel =
+    route && from && to ? (
+      <motion.div
+        key="dock"
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 12 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+        className="w-full max-w-xl"
+      >
+        <Dock route={route} onVia={flyTo} />
+      </motion.div>
+    ) : null;
+
   return (
     <div className="relative h-full w-full overflow-hidden bg-background text-foreground">
       <a
@@ -96,30 +132,33 @@ export default function App() {
       />
 
       <Fade className="z-10" />
-      <Fade side="bottom" amount={40} height="72px" className="z-10" />
+      <Fade
+        side="bottom"
+        amount={48}
+        height="160px"
+        className="z-10 sm:hidden"
+      />
+      <Fade
+        side="bottom"
+        amount={40}
+        height="72px"
+        className="z-10 hidden sm:block"
+      />
 
       <Veil ready={ready} />
 
-      <header className="pointer-events-none absolute left-3 top-3.5 z-30 sm:left-5 sm:top-5">
-        <p className="brand">BearPath</p>
+      <header className="pointer-events-none absolute left-3 top-[max(0.75rem,env(safe-area-inset-top))] z-30 sm:left-5 sm:top-5">
+        <Brand />
       </header>
 
       <div
         id="planner"
-        className="pointer-events-none absolute inset-x-3 top-12 z-30 flex justify-center sm:inset-x-24 sm:top-4"
+        className="pointer-events-none absolute inset-x-3 z-30 flex justify-center bottom-[max(0.75rem,env(safe-area-inset-bottom))] sm:inset-x-24 sm:top-4 sm:bottom-auto"
       >
-        <Island
-          from={byCode(from)}
-          to={byCode(to)}
-          hint={open ? "" : hint}
-          onFrom={() => show("from")}
-          onTo={() => show("to")}
-          onSwap={swap}
-          onClear={clear}
-        />
+        {island}
       </div>
 
-      <div className="pointer-events-none absolute right-3 top-3 z-30 sm:right-5 sm:top-4">
+      <div className="pointer-events-none absolute right-3 top-[max(0.75rem,env(safe-area-inset-top))] z-30 sm:right-5 sm:top-4">
         <Tools
           weight={weight}
           locating={locating}
@@ -129,29 +168,9 @@ export default function App() {
         />
       </div>
 
-      <div className="pointer-events-none absolute inset-x-0 bottom-8 z-30 flex flex-col items-center gap-2 px-3 sm:bottom-10">
-        {error ? (
-          <p
-            role="alert"
-            className="max-w-xl rounded-full border border-destructive/30 bg-background/80 px-3 py-1.5 text-center text-xs text-destructive"
-          >
-            {error}
-          </p>
-        ) : null}
-        <AnimatePresence>
-          {route && from && to ? (
-            <motion.div
-              key="dock"
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 12 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-              className="w-full max-w-xl"
-            >
-              <Dock route={route} onVia={flyTo} />
-            </motion.div>
-          ) : null}
-        </AnimatePresence>
+      <div className="pointer-events-none absolute inset-x-0 z-30 flex flex-col items-center gap-2 px-3 bottom-[calc(max(0.75rem,env(safe-area-inset-bottom))+5.5rem)] sm:bottom-10">
+        {errorBanner}
+        <AnimatePresence>{routePanel}</AnimatePresence>
       </div>
 
       <Palette
