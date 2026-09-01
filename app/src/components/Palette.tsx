@@ -26,7 +26,7 @@ export function Palette({ open, slot, to, onOpen, onPick }: PaletteProps) {
       description="Search a North Campus building by name, code, or alias."
     >
       <Input placeholder={`${title}…`} />
-      <List className="max-h-[min(24rem,60vh)]">
+      <List className="sm:max-h-[min(24rem,60vh)] sm:flex-none">
         <Empty>No building matches that.</Empty>
         <Group heading="North Campus">
           {PALETTE.map((building) => (
