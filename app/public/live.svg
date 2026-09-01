@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="148" height="44" viewBox="0 0 148 44" role="img" aria-label="Try it live">
+  <rect width="148" height="44" rx="8" fill="#7dcc9a"/>
+  <text
+    x="74"
+    y="28"
+    text-anchor="middle"
+    font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+    font-size="16"
+    font-weight="600"
+    fill="#140f0c"
+  >Try it live</text>
+</svg>

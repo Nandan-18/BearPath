@@ -9,8 +9,8 @@ BearPath is a live, responsive campus map for the University of Alberta North Ca
 Pick a start and destination, slide the indoor/outdoor preference, and BearPath draws the route on a 3D map with distance, walk time, and pedway stops along the way.
 
 <p align="center">
-  <a href="https://mybearpath.vercel.app" rel="noopener noreferrer" style="display: inline-block; padding: 12px 28px; font-size: 16px; font-weight: 600; line-height: 1; color: #140f0c; background-color: #7dcc9a; border-radius: 8px; text-decoration: none;">
-    Try it live
+  <a href="https://mybearpath.vercel.app">
+    <img src="app/public/live.svg" alt="Try it live at mybearpath.vercel.app" width="148" height="44">
   </a>
 </p>
 
