@@ -79,12 +79,20 @@ export function find(
 }
 
 function cost(item: Edge, indoorWeight: number): number {
-  return INDOOR.has(item.kind) ? item.distance_km * indoorWeight : item.distance_km;
+  return INDOOR.has(item.kind)
+    ? item.distance_km * indoorWeight
+    : item.distance_km;
 }
 
-function dijkstra(adj: Link[][], source: number): [number[], Array<Step | null>] {
+function dijkstra(
+  adj: Link[][],
+  source: number,
+): [number[], Array<Step | null>] {
   const dist = Array.from({ length: adj.length }, () => INF);
-  const prev: Array<Step | null> = Array.from({ length: adj.length }, () => null);
+  const prev: Array<Step | null> = Array.from(
+    { length: adj.length },
+    () => null,
+  );
   dist[source] = 0;
   const heap: [number, number][] = [];
   push(heap, 0, source);

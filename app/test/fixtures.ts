@@ -1,4 +1,14 @@
-import type { Edge, EdgeKind, Graph, Node, NodeKind, Door, Pedway, Segment, Building } from "@/graph/models";
+import type {
+  Building,
+  Door,
+  Edge,
+  EdgeKind,
+  Graph,
+  Node,
+  NodeKind,
+  Pedway,
+  Segment,
+} from "@/graph/models";
 
 export function hall(code: string, lat = 53.53, lon = -113.53): Building {
   return {
@@ -10,7 +20,10 @@ export function hall(code: string, lat = 53.53, lon = -113.53): Building {
   };
 }
 
-export function seg(kind: Segment["kind"], coordinates: [number, number][]): Segment {
+export function seg(
+  kind: Segment["kind"],
+  coordinates: [number, number][],
+): Segment {
   return { kind, coordinates };
 }
 

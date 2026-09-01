@@ -1,5 +1,5 @@
-import type * as GeoJSON from "geojson";
 import type { Coord } from "@/graph/models";
+import type * as GeoJSON from "geojson";
 import { GeoJSONSource, LngLatBounds, Map } from "maplibre-gl";
 
 const stamp = new WeakMap<Map, number>();
@@ -21,11 +21,17 @@ export function tryPaint(run: () => void): void {
   }
 }
 
-export function paint(map: Map, ...args: Parameters<Map["setPaintProperty"]>): void {
+export function paint(
+  map: Map,
+  ...args: Parameters<Map["setPaintProperty"]>
+): void {
   tryPaint(() => map.setPaintProperty(...args));
 }
 
-export function layout(map: Map, ...args: Parameters<Map["setLayoutProperty"]>): void {
+export function layout(
+  map: Map,
+  ...args: Parameters<Map["setLayoutProperty"]>
+): void {
   tryPaint(() => map.setLayoutProperty(...args));
 }
 
@@ -41,11 +47,16 @@ export function bounds(coords: Coord[]): LngLatBounds {
   return box;
 }
 
-export function collection(features: GeoJSON.Feature[] = []): GeoJSON.FeatureCollection {
+export function collection(
+  features: GeoJSON.Feature[] = [],
+): GeoJSON.FeatureCollection {
   return { type: "FeatureCollection", features };
 }
 
-export function buildingPoint(building: { lat: number; lon: number }): [number, number] {
+export function buildingPoint(building: {
+  lat: number;
+  lon: number;
+}): [number, number] {
   return [building.lon, building.lat];
 }
 
@@ -53,14 +64,22 @@ export function point(
   coordinates: [number, number],
   properties: GeoJSON.GeoJsonProperties,
 ): GeoJSON.Feature {
-  return { type: "Feature", properties, geometry: { type: "Point", coordinates } };
+  return {
+    type: "Feature",
+    properties,
+    geometry: { type: "Point", coordinates },
+  };
 }
 
 export function line(
   coordinates: [number, number][],
   properties: GeoJSON.GeoJsonProperties,
 ): GeoJSON.Feature {
-  return { type: "Feature", properties, geometry: { type: "LineString", coordinates } };
+  return {
+    type: "Feature",
+    properties,
+    geometry: { type: "LineString", coordinates },
+  };
 }
 
 export function geo(map: Map, id: string): GeoJSONSource | undefined {
@@ -91,7 +110,9 @@ export function data(
   id: string,
   payload: GeoJSON.Feature[] | GeoJSON.FeatureCollection = [],
 ): void {
-  void geo(map, id)?.setData(Array.isArray(payload) ? collection(payload) : payload);
+  void geo(map, id)?.setData(
+    Array.isArray(payload) ? collection(payload) : payload,
+  );
 }
 
 export function layer(
@@ -157,5 +178,8 @@ export function play(
 }
 
 export function esc(value: string): string {
-  return value.replace(/[&<>"']/g, (character) => ENTITIES[character] ?? character);
+  return value.replace(
+    /[&<>"']/g,
+    (character) => ENTITIES[character] ?? character,
+  );
 }

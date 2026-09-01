@@ -53,7 +53,9 @@ export function expectCcisSub(route: Result, deep = false): void {
   expect(route.via).toEqual(CCIS_SUB.via);
   expect(route.geometry[0]).toEqual(CCIS_SUB.geometryStart);
   if (deep) {
-    expect(route.segments.map((segment) => segment.kind)).toEqual(CCIS_SUB.segmentKinds);
+    expect(route.segments.map((segment) => segment.kind)).toEqual(
+      CCIS_SUB.segmentKinds,
+    );
     expect(route.geometry).toHaveLength(9);
     expect(route.geometry.at(-1)).toEqual(CCIS_SUB.geometryEnd);
   }

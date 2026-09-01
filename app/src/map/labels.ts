@@ -3,7 +3,15 @@ import { nearest } from "@/lib/format";
 import type * as GeoJSON from "geojson";
 import { Map, MapLayerMouseEvent, Popup } from "maplibre-gl";
 
-import { EXTRUDE, GOLD, ICE, INK, ROLE_COLOR, VIA_GLOW, roleSize } from "./theme";
+import {
+  EXTRUDE,
+  GOLD,
+  ICE,
+  INK,
+  ROLE_COLOR,
+  VIA_GLOW,
+  roleSize,
+} from "./theme";
 import {
   buildingPoint,
   collection,

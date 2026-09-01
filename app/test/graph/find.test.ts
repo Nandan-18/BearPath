@@ -1,15 +1,22 @@
 import { describe, expect, it } from "vitest";
 
+import { find } from "@/graph/find";
+import { load } from "@/graph/loader";
 import {
   NoPathError,
   SameBuildingError,
   UnknownBuildingError,
 } from "@/graph/models";
-import { find } from "@/graph/find";
-import { load } from "@/graph/loader";
 
+import {
+  disconnected,
+  doors,
+  edge,
+  makeGraph,
+  node,
+  weighted,
+} from "../fixtures";
 import { CCIS, expectCcisSub } from "../goldens";
-import { disconnected, doors, edge, makeGraph, node, weighted } from "../fixtures";
 
 describe("find", () => {
   it("prefers the pedway when indoor weight is low", () => {
@@ -106,7 +113,10 @@ describe("find", () => {
 
   it("floors walk minutes at one", () => {
     const campus = makeGraph(
-      [node(0, "A", "door", 53.53, -113.53), node(1, "B", "door", 53.53001, -113.53)],
+      [
+        node(0, "A", "door", 53.53, -113.53),
+        node(1, "B", "door", 53.53001, -113.53),
+      ],
       [edge(0, 1, 0.01, "outdoor")],
       { A: [0], B: [1] },
     );
@@ -128,7 +138,9 @@ describe("find", () => {
   });
 
   it("rejects an unknown end", () => {
-    expect(() => find(weighted(), "A", "Z", 0.35)).toThrow(UnknownBuildingError);
+    expect(() => find(weighted(), "A", "Z", 0.35)).toThrow(
+      UnknownBuildingError,
+    );
     try {
       find(weighted(), "A", "Z", 0.35);
     } catch (error) {
@@ -180,7 +192,9 @@ describe("find", () => {
   it("routes south campus health buildings through pedways", () => {
     const route = find(load(), "ED-S", "ECHA", 0.35);
     expect(route.distance_km).toBe(0.2704298865337776);
-    expect(route.segments.some((segment) => segment.kind === "pedway")).toBe(true);
+    expect(route.segments.some((segment) => segment.kind === "pedway")).toBe(
+      true,
+    );
   });
 
   it("omits buildings you only pass outside on a real campus walk", () => {
@@ -188,13 +202,24 @@ describe("find", () => {
     expect(route.via[0]).toBe("CCIS");
     expect(route.via.at(-1)).toBe("ECHA");
     expect(route.via).not.toContain("SJ");
-    expect(route.via).toEqual(["CCIS", "C", "CAB", "SAB", "ED-S", "KATZ", "MS", "ECHA"]);
+    expect(route.via).toEqual([
+      "CCIS",
+      "C",
+      "CAB",
+      "SAB",
+      "ED-S",
+      "KATZ",
+      "MS",
+      "ECHA",
+    ]);
   });
 
   it("uses the official HUB to University LRT pedway", () => {
     const route = find(load(), "HUB", "ULRT", 0.15);
     expect(route.distance_km).toBe(0.036940148773975535);
     expect(route.distance_km).toBeLessThan(0.25);
-    expect(route.segments.some((segment) => segment.kind === "pedway")).toBe(true);
+    expect(route.segments.some((segment) => segment.kind === "pedway")).toBe(
+      true,
+    );
   });
 });

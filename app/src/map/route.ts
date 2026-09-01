@@ -58,20 +58,20 @@ function spec(
   };
 }
 
-const LINES: Stroke[] = (Object.keys(ROUTE_STROKE) as Segment["kind"][]).flatMap(
-  (kind) => {
-    const style = ROUTE_STROKE[kind];
-    return [
-      spec(kind, style.glow.width, style.glow.opacity, { blur: 8, glow: true }),
-      spec(
-        kind,
-        style.line.width,
-        0.97,
-        style.line.dash ? { dash: style.line.dash } : undefined,
-      ),
-    ];
-  },
-);
+const LINES: Stroke[] = (
+  Object.keys(ROUTE_STROKE) as Segment["kind"][]
+).flatMap((kind) => {
+  const style = ROUTE_STROKE[kind];
+  return [
+    spec(kind, style.glow.width, style.glow.opacity, { blur: 8, glow: true }),
+    spec(
+      kind,
+      style.line.width,
+      0.97,
+      style.line.dash ? { dash: style.line.dash } : undefined,
+    ),
+  ];
+});
 
 function stroke(map: Map, item: Stroke): void {
   layer(
@@ -156,7 +156,10 @@ function usable(segments: Segment[]) {
   const path = segments.filter((segment) => segment.coordinates.length >= 2);
   const first = path[0]?.coordinates[0];
   const last = path.at(-1)?.coordinates.at(-1);
-  const total = path.reduce((sum, segment) => sum + span(segment.coordinates), 0);
+  const total = path.reduce(
+    (sum, segment) => sum + span(segment.coordinates),
+    0,
+  );
   return { path, first, last, total };
 }
 

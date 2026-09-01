@@ -2,8 +2,8 @@ import type { Building } from "@/graph/models";
 import { Map, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 
-import { extrude, light, mute, sky, tint } from "./style";
 import { ensureFlag } from "./flag";
+import { extrude, light, mute, sky, tint } from "./style";
 import { VIEW } from "./theme";
 import { buildingPoint } from "./util";
 
