@@ -1,3 +1,4 @@
+import { Brand } from "@/components/Brand";
 import { AnimatePresence, motion } from "motion/react";
 
 export function Veil({ ready }: { ready: boolean }) {
@@ -15,7 +16,7 @@ export function Veil({ ready }: { ready: boolean }) {
           aria-live="polite"
         >
           <div className="flex flex-col items-center gap-3">
-            <p className="brand">BearPath</p>
+            <Brand />
             <motion.p
               className="font-sans text-sm tracking-tight text-foreground/70"
               animate={{ opacity: [0.55, 1, 0.55] }}
