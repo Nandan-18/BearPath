@@ -1,37 +1,32 @@
-# BearPath - Your Trusty Campus Map
+<p align="center">
+  <img src="app/public/favicon.svg" alt="" width="96" height="96">
+</p>
 
-BearPath is a live, responsive campus map website for the University of Alberta that generates hidden indoor routes through pedways and walkways. It provides users with the most efficient routes between classes, simplifying navigation while minimizing contact with the freezing temperatures outside - especially useful during Edmonton’s long unforgiving winters.
+<h1 align="center">BearPath - Your Trusty Campus Map</h1>
+
+BearPath is a live, responsive campus map for the University of Alberta North Campus. It finds walking routes through pedways and outdoor paths, so you can get between classes without taking the long way outside, especially during Edmonton's long, unforgiving winters.
+
+Pick a start and destination, slide the indoor/outdoor preference, and BearPath draws the route on a 3D map with distance, walk time, and pedway stops along the way.
 
 ## Inspiration
 
-The idea for BearPath arose from the need for a comprehensive campus map that includes indoor pedways and walkways during the winter months. Recognizing this gap, especially amid the University of Alberta community's demand, we embarked on creating a solution that would make navigating the campus smoother and more efficient.
+The idea for BearPath came from a gap in campus navigation: most maps ignore the indoor pedway network that keeps you warm when it is -30°C outside. After hearing that frustration in the UAlberta community, we built a tool to make getting across North Campus smoother, faster, and a little less miserable in winter.
 
-## Demo
+## How it works
 
-BearPath is hosted here: https://bearpath.up.railway.app/
+Everything runs in the browser. There is no backend, no API key, and no install step.
 
-Feel free to check it out and play around with it!
+Routing builds a campus graph from files in [`data/`](data/), then searches it in real time with a configurable indoor weight (default `0.35`; lower stays inside longer). The UI is Vite and React in [`app/`](app/). The map uses MapLibre GL with OpenFreeMap 3D buildings.
 
-## What's Next
+Share a route with query params, for example `?from=CCIS&to=SUB&w=0.35`.
 
-1) Add an option to search for routes with an emphasis on either indoor or outdoor paths.
-2) Enable users to generate optimized routes based on their course schedules.
-3) Enable an option to generate optimized paths based on current weather conditions. 
-4) Crowdsource locations of microwaves, pianos, and, bathrooms to enable directions to them.
-5) Integrate a live heatmap of foot traffic on various paths.
+## Development
 
-## Contributing
+Requires Node 22.13+.
 
-We welcome contributions to BearPath! If you have any ideas, improvements, or bug fixes, feel free to open an issue or submit a pull request on GitHub. Join us as we continue to evolve BearPath, simplifying campus navigation while embracing innovation and collaboration!
+```bash
+make dev    # local app at http://localhost:5173
+make        # lint, test, and build
+```
 
-## Group Members
-
-- [Ashwin Shreekumar](https://github.com/Hashedbrowns)
-- [Craig Lobo](https://github.com/craiglobo1) 
-- [Nandan Ramesh](https://github.com/Nandan-18)
-- [Ryan Bott](https://github.com/bottbott)
-- [Vighnesh Sajeev](https://github.com/vighnesh9388)
-
-## License
-
-BearPath is released under the [MIT License](https://opensource.org/licenses/MIT). You can find the details in the [LICENSE](LICENSE) file.
+Tests live in [`app/test/`](app/test). You can also run `make lint`, `make test`, or `make build` on their own.
