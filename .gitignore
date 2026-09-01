@@ -1,3 +1,12 @@
-venv
-.env
 .idea
+.vscode
+.DS_Store
+
+node_modules/
+coverage/
+.vite
+*.tsbuildinfo
+.eslintcache
+npm-debug.log*
+dist/
+build/
