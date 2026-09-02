@@ -3,6 +3,7 @@ import { Map, setWorkerUrl } from "maplibre-gl";
 import workerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url";
 
 import { ensureFlag } from "./flag";
+import { ensurePin } from "./pin";
 import { extrude, light, mute, sky, tint } from "./style";
 import { VIEW } from "./theme";
 import { buildingPoint } from "./util";
@@ -34,6 +35,7 @@ export function create(
     light(map);
     extrude(map);
     ensureFlag(map);
+    ensurePin(map);
   });
   map.once("idle", () => options?.onReady?.());
 

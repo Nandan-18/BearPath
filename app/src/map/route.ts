@@ -2,9 +2,11 @@ import type { Coord, Segment } from "@/graph/models";
 import type * as GeoJSON from "geojson";
 import { Map } from "maplibre-gl";
 
-import { FLAG, FLAG_SIZE, ensureFlag } from "./flag";
+import { isMobileWidth } from "@/lib/breakpoints";
+import { FLAG, FLAG_SIZE } from "./flag";
+import { PIN, PIN_SIZE } from "./pin";
 import { stage } from "./style";
-import { ICE, INK, ROUTE_STROKE, SEGMENT_COLOR } from "./theme";
+import { ROUTE_STROKE, SEGMENT_COLOR } from "./theme";
 import { span, trim } from "./trace";
 import {
   alive,
@@ -99,17 +101,17 @@ function stroke(map: Map, item: Stroke): void {
 
 function markerLayers(map: Map): void {
   source(map, MARKERS);
-  ensureFlag(map);
   layer(map, {
     id: START,
-    type: "circle",
+    type: "symbol",
     source: MARKERS,
     filter: ["==", ["get", "role"], "start"],
-    paint: {
-      "circle-radius": 8,
-      "circle-color": ["get", "color"],
-      "circle-stroke-width": 2,
-      "circle-stroke-color": INK,
+    layout: {
+      "icon-image": PIN,
+      "icon-size": PIN_SIZE as never,
+      "icon-anchor": "bottom",
+      "icon-allow-overlap": true,
+      "icon-ignore-placement": true,
     },
   });
   layer(map, {
@@ -144,7 +146,7 @@ function lines(segments: Segment[]) {
 function pins(first?: Coord, last?: Coord, done = false): GeoJSON.Feature[] {
   const markers: GeoJSON.Feature[] = [];
   if (first) {
-    markers.push(point(lngLat(first), { role: "start", color: ICE }));
+    markers.push(point(lngLat(first), { role: "start" }));
   }
   if (done && last) {
     markers.push(point(lngLat(last), { role: "finish" }));
@@ -190,7 +192,7 @@ function fit(
     settle();
     return;
   }
-  const mobile = window.innerWidth < 820;
+  const mobile = isMobileWidth();
   tryPaint(() => {
     map.fitBounds(box, {
       padding: mobile
