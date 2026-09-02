@@ -15,8 +15,6 @@ const PAINT: Record<string, "background-color" | "fill-color" | "line-color"> =
     line: "line-color",
   };
 const MUTE = [
-  "highway_name_other",
-  "highway_name_motorway",
   "road_oneway",
   "road_oneway_opposite",
   "place_other",
