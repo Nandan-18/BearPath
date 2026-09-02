@@ -4,6 +4,7 @@ import {
   UnknownBuildingError,
   type Coord,
   type Edge,
+  type EdgeKind,
   type Graph,
   type Result,
   type Segment,
@@ -67,6 +68,7 @@ export function find(
     }
   }
   const distance_km = indoor_km + outdoor_km;
+  const stops = via(graph, edges);
   return {
     distance_km,
     walk_minutes: Math.max(1, Math.round((distance_km / WALK) * 60)),
@@ -74,7 +76,8 @@ export function find(
     segments,
     indoor_km,
     outdoor_km,
-    via: via(graph, edges),
+    via: stops,
+    viaLegs: viaLegs(graph, edges, stops),
   };
 }
 
@@ -169,6 +172,43 @@ function via(graph: Graph, edges: Hop[]): string[] {
     stops.push(end);
   }
   return stops;
+}
+
+function viaLegs(graph: Graph, edges: Hop[], stops: string[]): EdgeKind[] {
+  if (stops.length <= 1) {
+    return [];
+  }
+  const legs: EdgeKind[] = [];
+  let edgeIndex = 0;
+  for (let stop = 1; stop < stops.length; stop++) {
+    const target = stops[stop]!;
+    const final = stop === stops.length - 1;
+    const kinds = new Set<EdgeKind>();
+    while (edgeIndex < edges.length) {
+      const [src, item] = edges[edgeIndex]!;
+      kinds.add(item.kind);
+      const next = src === item.a ? item.b : item.a;
+      edgeIndex++;
+      if (graph.nodes[next]!.building === target) {
+        break;
+      }
+    }
+    legs.push(legKind(kinds, final));
+  }
+  return legs;
+}
+
+function legKind(kinds: Set<EdgeKind>, final: boolean): EdgeKind {
+  if (kinds.has("outdoor")) {
+    return "outdoor";
+  }
+  if (final && kinds.has("pedway")) {
+    return "pedway";
+  }
+  if (kinds.has("internal")) {
+    return "internal";
+  }
+  return "pedway";
 }
 
 function samePoint(a?: Coord, b?: Coord): boolean {

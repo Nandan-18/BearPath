@@ -59,6 +59,7 @@ export interface Result {
   indoor_km: number;
   outdoor_km: number;
   via: string[];
+  viaLegs: EdgeKind[];
 }
 
 export interface Building {

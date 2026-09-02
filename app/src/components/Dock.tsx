@@ -2,6 +2,7 @@ import NumberFlow from "@number-flow/react";
 
 import type { Result } from "@/graph/models";
 import { byCode } from "@/lib/campus";
+import { SEGMENT_COLOR } from "@/map/theme";
 import { cn } from "@/lib/cn";
 import { brief, distance, split } from "@/lib/format";
 
@@ -49,7 +50,14 @@ export function Dock({ route, onVia }: DockProps) {
               key={`${code}-${index}`}
               className="flex shrink-0 items-center gap-1.5"
             >
-              {index > 0 ? <span className="text-foreground/20">→</span> : null}
+              {index > 0 ? (
+                <span
+                  aria-hidden="true"
+                  style={{ color: SEGMENT_COLOR[route.viaLegs[index - 1]!] }}
+                >
+                  →
+                </span>
+              ) : null}
               <button
                 type="button"
                 onClick={() => onVia(code)}

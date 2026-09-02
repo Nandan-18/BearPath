@@ -25,6 +25,7 @@ describe("find", () => {
     expect(kinds).toContain("pedway");
     expect(kinds).not.toContain("outdoor");
     expect(route.via).toEqual(["A", "B"]);
+    expect(route.viaLegs).toEqual(["pedway"]);
     expect(route.indoor_km).toBe(1.1);
     expect(route.outdoor_km).toBe(0);
   });
@@ -33,6 +34,7 @@ describe("find", () => {
     const route = find(weighted(), "A", "B", 2.5);
     expect(route.segments.map((segment) => segment.kind)).toEqual(["outdoor"]);
     expect(route.via).toEqual(["A", "B"]);
+    expect(route.viaLegs).toEqual(["outdoor"]);
   });
 
   it("includes buildings entered by pedway", () => {
@@ -186,7 +188,14 @@ describe("find", () => {
   it("matches the CCIS to SUB golden walk", () => {
     const campus = load();
     expect(campus.names.CCIS.startsWith("Centennial")).toBe(true);
-    expectCcisSub(find(campus, CCIS.start, CCIS.end, CCIS.weight), true);
+    const route = find(campus, CCIS.start, CCIS.end, CCIS.weight);
+    expectCcisSub(route, true);
+    expect(route.viaLegs).toEqual([
+      "internal",
+      "internal",
+      "internal",
+      "outdoor",
+    ]);
   });
 
   it("routes south campus health buildings through pedways", () => {
