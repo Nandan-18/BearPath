@@ -15,13 +15,11 @@ import {
 const graph = load();
 
 function compareBuildings(left: Building, right: Building): number {
-  const a = left.name.toLowerCase();
-  const b = right.name.toLowerCase();
-  if (a < b) {
-    return -1;
-  }
-  if (a > b) {
-    return 1;
+  const byName = left.name.localeCompare(right.name, undefined, {
+    sensitivity: "base",
+  });
+  if (byName !== 0) {
+    return byName;
   }
   return left.code.localeCompare(right.code);
 }

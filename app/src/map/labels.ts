@@ -34,6 +34,7 @@ const PICKS = "picks";
 const CODES = "codes";
 const HITS = [HIT, GLOW, PICKS, CODES];
 const bound = new WeakSet<Map>();
+const picks = new WeakMap<Map, (code: string) => void>();
 
 function showPopup(
   popup: Popup,
@@ -187,6 +188,7 @@ export function label(
 }
 
 export function enablePicks(map: Map, onPick: (code: string) => void): void {
+  picks.set(map, onPick);
   if (bound.has(map)) {
     return;
   }
@@ -241,7 +243,7 @@ export function enablePicks(map: Map, onPick: (code: string) => void): void {
     const click = (event: MapLayerMouseEvent) => {
       const code = event.features?.[0]?.properties?.code;
       if (code) {
-        onPick(String(code));
+        picks.get(map)?.(String(code));
       }
     };
     for (const layer of HITS) {
@@ -277,7 +279,7 @@ export function enablePicks(map: Map, onPick: (code: string) => void): void {
       }
       const found = snap(event.lngLat.lat, event.lngLat.lng);
       if (found) {
-        onPick(found.code);
+        picks.get(map)?.(found.code);
       }
     });
   };

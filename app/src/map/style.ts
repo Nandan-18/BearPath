@@ -4,7 +4,7 @@ import { EXTRUDE, INK, PAPER } from "./theme";
 import { layer, layout, paint, tryPaint } from "./util";
 
 const TILES = "openmaptiles";
-const BUILDINGS = "building";
+const BUILDING_LAYER = "building";
 
 const RAIL = "#2c2620";
 const RAIL_DASH = "#3a322c";
@@ -143,7 +143,7 @@ function beneath(map: Map): string | undefined {
 export function extrude(map: Map): void {
   const layers = map.getStyle().layers ?? [];
   for (const found of layers) {
-    if (found.type === "fill" && found["source-layer"] === BUILDINGS) {
+    if (found.type === "fill" && found["source-layer"] === BUILDING_LAYER) {
       layout(map, found.id, "visibility", "none");
     }
   }
@@ -153,7 +153,7 @@ export function extrude(map: Map): void {
     {
       id: EXTRUDE,
       source: TILES,
-      "source-layer": BUILDINGS,
+      "source-layer": BUILDING_LAYER,
       type: "fill-extrusion",
       minzoom: 14,
       filter: ["!=", ["get", "hide_3d"], true],

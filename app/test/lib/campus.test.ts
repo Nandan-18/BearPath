@@ -9,7 +9,9 @@ describe("BUILDINGS", () => {
   it("returns a sorted campus catalog", () => {
     expect(BUILDINGS.length).toBeGreaterThan(60);
     const names = BUILDINGS.map((item) => item.name.toLowerCase());
-    expect([...names].sort()).toEqual(names);
+    const byName = (left: string, right: string) =>
+      left.localeCompare(right, undefined, { sensitivity: "base" });
+    expect([...names].sort(byName)).toEqual(names);
     const ccis = byCode("CCIS");
     expect(ccis?.name.startsWith("Centennial")).toBe(true);
     expect(ccis?.lat).toBeCloseTo(53.528235299936696, 10);

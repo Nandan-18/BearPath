@@ -100,14 +100,20 @@ export function usePlanner(map: Map | null, ready: boolean) {
     if (!map || !ready) {
       return;
     }
-    label(map, from, to, route?.via);
     enablePicks(map, onPick);
+  }, [map, ready, onPick]);
+
+  useEffect(() => {
+    if (!map || !ready) {
+      return;
+    }
+    label(map, from, to, route?.via);
     if (route) {
       draw(map, route.segments, route.via);
       return;
     }
     clear(map);
-  }, [map, ready, from, to, route, onPick]);
+  }, [map, ready, from, to, route]);
 
   const withMap = useCallback(
     (run: (map: Map) => void) => {

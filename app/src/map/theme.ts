@@ -2,7 +2,7 @@ import type { Segment } from "@/graph/models";
 
 export const ICE = "#7dcc9a";
 export const GOLD = "#f26a45";
-export const LAMP = "#ffe8b0";
+const LAMP = "#ffe8b0";
 export const INK = "#140f0c";
 export const PAPER = "#f3e6d4";
 export const VIA_GLOW = "#e8a070";

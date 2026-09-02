@@ -57,7 +57,7 @@ export function buildingPoint(building: {
   lat: number;
   lon: number;
 }): [number, number] {
-  return [building.lon, building.lat];
+  return lngLat([building.lat, building.lon]);
 }
 
 export function point(
