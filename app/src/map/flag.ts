@@ -1,5 +1,6 @@
-import { Map } from "maplibre-gl";
+import type { Map } from "maplibre-gl";
 
+import { ensureImage } from "./image";
 import { GOLD, INK, PAPER } from "./theme";
 
 export const FLAG = "bearpath-finish";
@@ -41,32 +42,6 @@ function svg(): string {
 </svg>`;
 }
 
-let image: HTMLImageElement | null = null;
-let pending: Promise<HTMLImageElement> | null = null;
-
-function load(): Promise<HTMLImageElement> {
-  if (image) {
-    return Promise.resolve(image);
-  }
-  pending ??= new Promise((resolve, reject) => {
-    const img = new Image();
-    img.onload = () => {
-      image = img;
-      resolve(img);
-    };
-    img.onerror = reject;
-    img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg())}`;
-  });
-  return pending;
-}
-
 export function ensureFlag(map: Map): void {
-  if (map.hasImage(FLAG)) {
-    return;
-  }
-  void load().then((img) => {
-    if (!map.hasImage(FLAG)) {
-      map.addImage(FLAG, img, { pixelRatio: 2 });
-    }
-  });
+  ensureImage(map, FLAG, svg());
 }
